@@ -321,8 +321,8 @@ body .h1 {
   display: block;
   margin-top: 3rem;
   margin-bottom: 1rem;
-  color: #2bbc8a;
-  letter-spacing: 0.01em;
+  color: #5ff9ff;
+  letter-spacing: 0.2em;
   font-weight: 700;
   font-style: normal;
   font-size: 1.5em;
@@ -482,7 +482,7 @@ body {
   color: #c9cacc;
   font-weight: 400;
   font-size: 14px;
-  font-family: "Menlo", "Meslo LG", monospace;
+  font-family: "system-ui", "Verdana", monospace;
   line-height: 1.725;
   text-rendering: geometricPrecision;
   -moz-osx-font-smoothing: grayscale;
@@ -598,7 +598,7 @@ body {
   margin-top: 0;
   margin-bottom: 0;
   color: #c9cacc;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.2em;
   font-weight: 700;
   font-style: normal;
   font-size: 1.5rem;
@@ -623,7 +623,7 @@ body {
 }
 #header #nav {
   color: #2bbc8a;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.2em;
   font-weight: 200;
   font-style: normal;
   font-size: 0.8rem;
@@ -770,7 +770,7 @@ body {
 }
 #header-post #nav {
   color: #2bbc8a;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.2em;
   font-weight: 200;
   font-style: normal;
   font-size: 0.8rem;
@@ -1099,7 +1099,7 @@ article header .meta * {
 }
 article header .author {
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.2em;
   font-weight: 700;
 }
 article header .postdate {
@@ -1410,7 +1410,8 @@ article .content .caption {
   font-display: swap;
   font-weight: 400;
   font-size: 11.200000000000001px;
-  font-family: "Menlo", "Meslo LG", monospace;
+  /* font-family: "Menlo", "Meslo LG", monospace; */
+  font-family: "system-ui", "Verdana", monospace;
   line-height: 1.725;
   text-rendering: geometricPrecision;
   text-align: center;
@@ -1580,7 +1581,8 @@ pre {
   border: 1px dotted #908d8d;
   border-radius: 4px;
   font-size: 13px;
-  font-family: "Menlo", "Meslo LG", monospace;
+  /* font-family: "Menlo", "Meslo LG", monospace; */
+  font-family: "system-ui", "Verdana", monospace;
   line-height: 22px;
   -webkit-border-radius: 4px;
 }
@@ -1601,7 +1603,8 @@ code {
   padding: 10px 15px;
   border-radius: 4px;
   background: #212326;
-  font-family: "Menlo", "Meslo LG", monospace;
+  /* font-family: "Menlo", "Meslo LG", monospace; */
+  font-family: "system-ui", "Verdana", monospace;
   -webkit-border-radius: 4px;
 }
 .highlight figcaption {
