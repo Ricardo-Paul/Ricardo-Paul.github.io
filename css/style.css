@@ -1084,7 +1084,7 @@ body {
 }
 article header .posttitle {
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   text-transform: none;
   font-size: 1.5em;
   line-height: 1.25;
@@ -1664,4 +1664,8 @@ code {
 }
 #header-post #actions {
   direction: ltr !important;
+}
+
+.p-name {
+  background-color: red;
 }
