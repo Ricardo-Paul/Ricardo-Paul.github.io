@@ -1100,7 +1100,9 @@ article header .meta * {
 article header .author {
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-weight: 700;
+  /* font-weight: 700; */
+  font-weight: 300;
+  color: #5ff9ff;
 }
 article header .postdate {
   display: inline;
