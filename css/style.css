@@ -622,7 +622,7 @@ body {
   background-repeat: no-repeat;
 }
 #header #nav {
-  color: #2bbc8a;
+  color: #5ff9ff;
   letter-spacing: 0.2em;
   font-weight: 200;
   font-style: normal;
@@ -636,10 +636,10 @@ body {
 }
 #header #nav ul a {
   margin-right: 15px;
-  color: #2bbc8a;
+  color: #5ff9ff;
 }
 #header #nav ul a:hover {
-  background-image: linear-gradient(transparent, transparent 5px, #2bbc8a 5px, #2bbc8a);
+  background-image: linear-gradient(transparent, transparent 5px, #5ff9ff 5px, #5ff9ff);
   background-position: bottom;
   background-size: 100% 6px;
   background-repeat: repeat-x;
@@ -648,7 +648,7 @@ body {
   display: inline-block;
   margin-right: 15px;
   border-right: 1px dotted;
-  border-color: #2bbc8a;
+  border-color: #5ff9ff;
   vertical-align: middle;
 }
 #header #nav ul .icon {
@@ -741,7 +741,7 @@ body {
   margin-left: 15px;
 }
 #header-post #menu-icon:hover {
-  color: #2bbc8a;
+  color: #5ff9ff;
 }
 #header-post #menu-icon-tablet {
   float: right;
@@ -749,7 +749,7 @@ body {
   margin-left: 15px;
 }
 #header-post #menu-icon-tablet:hover {
-  color: #2bbc8a;
+  color: #5ff9ff;
 }
 #header-post #top-icon-tablet {
   position: fixed;
@@ -759,10 +759,10 @@ body {
   margin-left: 15px;
 }
 #header-post #top-icon-tablet:hover {
-  color: #2bbc8a;
+  color: #5ff9ff;
 }
 #header-post .active {
-  color: #2bbc8a;
+  color: #5ff9ff;
 }
 #header-post #menu {
   display: none;
