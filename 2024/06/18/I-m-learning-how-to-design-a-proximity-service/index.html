@@ -14,7 +14,7 @@
 <meta property="og:description" content="Tonight I start reading System Design Interview by Alex Xu and Sahn Lam. I’m reading the first chapter which is about designing a proximity service. Here’s what I’ve learned so far: Non functional req">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-19T03:14:21.000Z">
-<meta property="article:modified_time" content="2024-06-19T21:00:29.613Z">
+<meta property="article:modified_time" content="2024-06-19T21:13:24.277Z">
 <meta property="article:author" content="Ricardo Paul">
 <meta name="twitter:card" content="summary">
     
@@ -150,7 +150,7 @@
 
   <div class="content e-content" itemprop="articleBody">
     <p>Tonight I start reading System Design Interview by Alex Xu and Sahn Lam. I’m reading the first chapter which is about designing a proximity service. Here’s what I’ve learned so far:</p>
-<p><strong>Non functional requirements</strong><br>Requirements that aren’t necessirily features like data privacy, low latency, high availability and scalibilty.</p>
+<p><strong>Non functional requirements</strong><br>Requirements that aren’t necessarily features like data privacy, low latency, high availability and scalibilty.</p>
 <p><strong>Calculating QPS (Query per second)</strong><br>I learned how to calculate QPS - which is the number of queries a system can handle in a second.<br>You take the number of requests received in a day then divide it by the number of seconds in a day (10^5 seconds roughly). OR.<br>You take the number of requests received in an hour and divide it by the number of seconds in an hour. (3600 seconds)<br>For the proximity service, we assume that we’ll receive 500.000 million requests a day which translates to 5000 requests per second.</p>
 <p><strong>Read / Write Ratio</strong><br>I learn how to make decisions based on the read / write ratio of a system. For example for the proximity service, read will be more frequent than write, so Mysql is a good fit as a database. </p>
 <p>Next I’ll dive into the high level architecture and the choice of algorithm to find nearby places.</p>
