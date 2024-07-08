@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Notes taken over the weekend about processor architectures   What does a 32-bit processor mean ? One term to understand is “Address Space”.Address space is the maximum size of memory (addressable m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes on processor architectures">
+<meta property="og:url" content="http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/index.html">
+<meta property="og:site_name" content="Ricardo Paul">
+<meta property="og:description" content="Notes taken over the weekend about processor architectures   What does a 32-bit processor mean ? One term to understand is “Address Space”.Address space is the maximum size of memory (addressable m">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-08T03:58:04.000Z">
+<meta property="article:modified_time" content="2024-07-08T04:07:22.582Z">
+<meta property="article:author" content="Ricardo Paul">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/logo.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+        
+      
+    
+    <!-- title -->
+    <title>Notes on processor architectures</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Notes</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/01/Giving-vim-another-chance/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&text=Notes on processor architectures"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&is_video=false&description=Notes on processor architectures"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes on processor architectures&body=Check out this article: http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&name=Notes on processor architectures&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&t=Notes on processor architectures"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Notes on processor architectures
+    </h1>
+
+
+
+    <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <span class="p-name" itemprop="name">Ricardo Paul</span>
+    </span>
+    <div class="meta">
+      <span> On </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-08T03:58:04.000Z" class="dt-published" itemprop="datePublished">July 7, 2024</time>
+        
+      
+    </div>
+
+
+      
+
+    </div>
+    
+
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>
+  Notes taken over the weekend about processor architectures
+</p>
+
+<p>What does a 32-bit processor mean ?</p>
+<p>One term to understand is <strong>“Address Space”</strong>.<br>Address space is the maximum size of memory (addressable memory) that a processor (mainly the addressing structure of a processor) can access.</p>
+<p>At a high level, processors can access memory, but there’s a limit in how much memory they can access. </p>
+<p>It’s important to note that one memory location is not 1 bit. But a collection of 8 bits. Or 1 byte.</p>
+<p>An 8-bit processor can address 256 memory locations. That means 256 bytes, since each memory location is 1 byte (A unique 8-bit combination).<br>In C for example, the size of an int type is 4 bytes. That’s an int type variable fills 4 memory locations.</p>
+<p>So the address space of an 8-bit processor is 256 bytes. That’s the maximum amount of memory it can access.<br>Similarly, a 32-bit processor can address 4 GB of memory. It’s 2^32 bytes, which is around 4GB.<br>Using the same formula, a 64-bit CPU (64 lines in the address bus ?) has an address space of 18 exabytes. (16 billion GP of RAM).</p>
+<p>What directly determines how much memory a CPU can access is the size of the Address Bus. So an 8-bit computer will have an address bus that contains 8 lines. These 8 lines connect the CPU to the physical memory. Each of the lines can carry 1 bit.</p>
+<p>Notes from this video<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=_QM7WA4GQzk&amp;t=135s">https://www.youtube.com/watch?v=_QM7WA4GQzk&amp;t=135s</a></p>
+<p>According to this video, the CPU register size is what determines how many memory locations the CPU can access. A 2-bit register [0 | 1] can access 4 memory locations 2^2. That is because we can have 4 different combinations of 0 and 1.<br>The memory limit of the CPU comes from the register. My mental model now is that the CPU register should match the address bus.</p>
+<p><strong>CPU instruction set</strong><br>An instruction set is a list of commands that the CPU can execute. Some example instructions can be LOAD (load something from RAM), ADD (add a number to) etc.. What we should retain here is that these instructions are coded in bits. If they are coded in say, 4 bits, the instruction set is called a 4-bit instruction set.<br>0000: ADD<br>0001: LOAD<br>Etc…<br>CPUs on the Market - Some history</p>
+<p>CPUs with 16-bit registers in the past.<br>Intel 8086<br>Motorola 68000</p>
+<p>Although their instructions were both coded in 16 bits, the instructions weren’t the same. So software written for one could not be executed by the other.</p>
+<p>CPUs with 32-bit registers in the past<br>Intel 80386 (included the 16-bit instructions of the previous plus more)<br>Motorola PowerPC</p>
+<p><strong>Pentium from Intel (IA32)</strong><br>IA32 means Intel Architecture 32 (32 bits CPU)<br>And then there was the Pentium CPU from Intel, which also had a 32-bit register.<br>Something to pay attention to when it comes to naming: a 16-bit intel processor was called Intel 8086, a follow-up 32-bit was called Intel 80386<br>86 is common in the names, hence the name x86.<br>So x86 refers to the Intel 32-bit architecture. </p>
+<p>The pentium being a 32-bit CPU (has a 32-bit register) can only address 4 GB of memory. AMD is going to improve it.</p>
+<p><strong>Itanium (IA64) from Intel</strong><br>For servers and high-end workstations, Intel created the Itanium which had a 64-bit register. It had an entire new instruction set, not compatible with any previous model. The Itanium architecture is called IA-64 or Intel Architecture 64.</p>
+<p>Windows OS compatible with Intel’s Itanium - Windows XP<br>    This is just for a better understanding. Windows XP was designed to be compatible with Intel’s IA-64. This was the first 64-bit CPU made by Intel - however, the standard for 64-bit CPU today isn’t the Itanium, as we’re going to see.</p>
+<p><strong>Athlon 64 from AMD</strong><br>AMD is another CPU maker. They’ve been making really good CPUs. They made the Athlon 64 which was an improvement of Intel’s Pentium.<br>Need to underline that AMD CPUs are like functional clones of Intel’s. One of their selling points was you can buy an AMD CPU and still run all your Intels software.</p>
+<p>So AMD made the Athlon 64 which supported Intel’s pentium instruction set but added some features that allow it to address more than 4GB of memory.<br>AMD’s Athlon 64 became so popular that Microsoft began to design their operating systems to the Athlon64 standards. And the standard was called the 64-bit standard or AMD64.<br>Even Intel’s future versions of their Intel’s CPU (started with the Pentium 4 CPU) were adapted to AMD’s 64-bit standard.<br>Remember x86 for the 32-bit Intel’s CPU ?<br>Intel’s CPU adapted to the 64-bit standard are called x64<br>So x64 CPUs are more advanced than x86 since they are based on 64-bit architecture, while x86 are based on 32-bit architecture.</p>
+<p>Windows Operating systems that are x86-64 means they support both Intel’s old 32-bit and the new 64-bit standard. The AMD improvement.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Notes</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&text=Notes on processor architectures"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&is_video=false&description=Notes on processor architectures"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes on processor architectures&body=Check out this article: http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&title=Notes on processor architectures"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&name=Notes on processor architectures&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://ricardopaul.com/2024/07/07/Notes-on-processor-architectures/&t=Notes on processor architectures"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Ricardo Paul
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Notes</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
