@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Socket programmingThese are notes taken from implementing a web server in C Creating a TCP socket - since HTTP is built on top of TCP.This is done by callig the socket() system call. Let’s study the s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="I&#39;m writing a web server from scratch in C">
+<meta property="og:url" content="http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/index.html">
+<meta property="og:site_name" content="Ricardo Paul">
+<meta property="og:description" content="Socket programmingThese are notes taken from implementing a web server in C Creating a TCP socket - since HTTP is built on top of TCP.This is done by callig the socket() system call. Let’s study the s">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-14T03:36:44.000Z">
+<meta property="article:modified_time" content="2024-07-14T03:51:20.494Z">
+<meta property="article:author" content="Ricardo Paul">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/logo.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+        
+      
+    
+    <!-- title -->
+    <title>I&#39;m writing a web server from scratch in C</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Notes</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/12/Buffers-in-computing/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&text=I&#39;m writing a web server from scratch in C"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&is_video=false&description=I&#39;m writing a web server from scratch in C"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=I&#39;m writing a web server from scratch in C&body=Check out this article: http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&name=I&#39;m writing a web server from scratch in C&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&t=I&#39;m writing a web server from scratch in C"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Let%E2%80%99s-study-the-signature-of-socket"><span class="toc-number">1.</span> <span class="toc-text">Let’s study the signature of socket()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-domain"><span class="toc-number">1.1.</span> <span class="toc-text">What is domain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-type"><span class="toc-number">1.2.</span> <span class="toc-text">What is type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-protocol"><span class="toc-number">1.3.</span> <span class="toc-text">What is protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#file-descriptor"><span class="toc-number">1.4.</span> <span class="toc-text">file descriptor</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Binding-the-socket-to-a-port-the-bind-system-call"><span class="toc-number">2.</span> <span class="toc-text">Binding the socket to a port (the bind() system call)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bind-signature"><span class="toc-number">2.1.</span> <span class="toc-text">bind signature</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sockaddr-in-struct-members"><span class="toc-number">2.2.</span> <span class="toc-text">sockaddr_in struct members</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTONS-endianness-byte-order"><span class="toc-number">2.3.</span> <span class="toc-text">HTONS, endianness, byte order</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-INADDR-ANY"><span class="toc-number">2.4.</span> <span class="toc-text">What is INADDR_ANY ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-are-network-interfaces-ifconfig"><span class="toc-number">2.5.</span> <span class="toc-text">What are network interfaces ? ifconfig ?</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        I&#39;m writing a web server from scratch in C
+    </h1>
+
+
+
+    <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <span class="p-name" itemprop="name">Ricardo Paul</span>
+    </span>
+    <div class="meta">
+      <span> On </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-14T03:36:44.000Z" class="dt-published" itemprop="datePublished">July 13, 2024</time>
+        
+      
+    </div>
+
+
+      
+
+    </div>
+    
+
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Socket programming</strong><br>These are notes taken from implementing a web server in C</p>
+<p>Creating a TCP socket - since HTTP is built on top of TCP.<br>This is done by callig the <code>socket()</code> system call.</p>
+<h2 id="Let’s-study-the-signature-of-socket"><a href="#Let’s-study-the-signature-of-socket" class="headerlink" title="Let’s study the signature of socket()"></a>Let’s study the signature of <code>socket()</code></h2><p>man socket</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="What-is-domain"><a href="#What-is-domain" class="headerlink" title="What is domain"></a>What is domain</h3><p>some new terms, communications domain, protocol family<br>I cannot make any logical connection betweent the word domain and protocol family..<br>When we’re creating a socket, it is on us to decide what types of IP addresses will be able to communicate with our socket, most common are IPv4 and IPv6. We refer to types of IP addresses as protocol family or <strong>Address Family</strong> (AF). AF_INET represents the IPv4 family.</p>
+<p><code>AP_INET</code> is an integer defined in <code>&lt;sys/socket.h&gt;</code> header.</p>
+<h3 id="What-is-type"><a href="#What-is-type" class="headerlink" title="What is type"></a>What is type</h3><p>The socket type is about picking the Transport Protocol. <code>SOCK_STREAM</code> is used for a TCP socket</p>
+<h3 id="What-is-protocol"><a href="#What-is-protocol" class="headerlink" title="What is protocol"></a>What is protocol</h3><p>It’s a little unclear what the protocol stands for here, but it’s always 0<br>The domain (first arg) is about picking the Protocol/Address Family. So specifying a protocol again ?</p>
+<h3 id="file-descriptor"><a href="#file-descriptor" class="headerlink" title="file descriptor"></a>file descriptor</h3><p>The return value of the socket system call is a file descriptor (a number), what is a file descriptor?</p>
+<h2 id="Binding-the-socket-to-a-port-the-bind-system-call"><a href="#Binding-the-socket-to-a-port-the-bind-system-call" class="headerlink" title="Binding the socket to a port (the bind() system call)"></a>Binding the socket to a port (the <code>bind()</code> system call)</h2><p>When we create a socket, it has an address family (exists in a name space), but not an address yet ?</p>
+<h3 id="bind-signature"><a href="#bind-signature" class="headerlink" title="bind signature"></a>bind signature</h3><p>int bind(int sockdfd, const struct socketaddr *addr, socklen_t address_len);</p>
+<ul>
+<li><p>takes the socket file descriptor</p>
+</li>
+<li><p>takes the address of a struct, the strcut is called socketaddr, its members are the address of the socket, addr is the struct variable (think of it as an instance of the struct), *addr means the address of the struct var.</p>
+<ul>
+<li>built-in structures: <code>sockaddr</code> (base), <code>sockaddr_in</code> (ipv4), <code>sockaddr_in6</code> (ipv6)<br>the address type the bind function expects is built-in and is a little generic, the ipv4 type we are passing is specific, but we’re required to cast it to the more generic sockaddr type.<br>these struct (s) are all defined in <code>&lt;netinet/in.h&gt;</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">my_addr</span>;</span></span><br><span class="line">bind(socket_fd, &amp;my_addr); <span class="comment">// this will error, &amp;my_add needs to be cased to sockaddr</span></span><br><span class="line">bind(socket_fd, (struct sockaddr *)&amp;my_addr) <span class="comment">// works, casting the IPv4 address to a generic type</span></span><br></pre></td></tr></table></figure>
+<h3 id="sockaddr-in-struct-members"><a href="#sockaddr-in-struct-members" class="headerlink" title="sockaddr_in struct members"></a><code>sockaddr_in</code> struct members</h3><p>if sin_port is the port of the server will listen on, i was expecting sin_addr to be an IP address, but we’re setting its value to INADDR_ANY which has a value of 0. The value of INADDR_ANY is the IPv4 address 0.0.0.0 - meaning the socket is reachable via all of the host network interfaces.</p>
+<p>the two most important members of this structure are: sin_port (socket internet port) and sin_addr (socket internet address)<br>The port specifies the port of the socket (port server will listen on)<br>The address specifies the network interface the server can be connected to. If we had to set the sin_addr to 127.0.0.1 - we would only be able to connect to the server on the host machine using the loopback interface, and not from a different computer on the same network using an IP assigned by the router (192.168.0.1). Since we’re setting it to 0.0.0.0 - we can access it via the loopback interface, wifi (using device on the same network)</p>
+<h3 id="HTONS-endianness-byte-order"><a href="#HTONS-endianness-byte-order" class="headerlink" title="HTONS, endianness, byte order"></a>HTONS, endianness, byte order</h3><p>byte ordering is about ordering bytes when data is transmitted over the network.<br>big-endian =&gt; put the most significant bytes first<br>little-endian =&gt; put the least significant bytes first<br>worth noting that endianness is about bytes ordering rather than bit ordering.</p>
+<p>litte-endian is common on PCs with x86 CPU architectures. However, network transport protocols: udp and tcp use big-endian. so it’s important to make sure to convert data to big endian before sending through the network, this is called Network Byte Order. Host is your machine.</p>
+<p>The C standard libray contains functions that convert values between the host and Network Byte Order (Big-Endian)<br>htons means Host to Network Short. It converts a 2-byte (16 bits) number to Big-endian before transporting through the network.</p>
+<h3 id="What-is-INADDR-ANY"><a href="#What-is-INADDR-ANY" class="headerlink" title="What is INADDR_ANY ?"></a>What is INADDR_ANY ?</h3><h3 id="What-are-network-interfaces-ifconfig"><a href="#What-are-network-interfaces-ifconfig" class="headerlink" title="What are network interfaces ? ifconfig ?"></a>What are network interfaces ? ifconfig ?</h3><p>A network interface is simply a way for your computer to connect to the internet. It can be via an Ethernet cable or Wi-fi.<br>The network interface card is the physical element inside the computer, for example the ethernet port is connected to the motherboard, the motherboard has the Network interface card.<br>More network interfaces:<br>    There exists more network interfaces than just wifi and ethernet. running ifconfig will list the network interfaces. there’s the loopback interface (lo0) which allows your computer to talk to itself. inet/ip address for it is: 127.0.0.1 (localhost)<br>    en0 is the wifi interface, its inet corresponds to your machine assigned ip by your router<br>    en1 maybe is the ethernet network interface ,  not sure.<br>there are also virtual interfaces (utun0, utun1) used to conect your computer to VPN.<br>awdl0 (Apple Wireless Direct link) used by apple for Airdrop - just to give you an idea of Networkinterfaces in general.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Notes</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Let%E2%80%99s-study-the-signature-of-socket"><span class="toc-number">1.</span> <span class="toc-text">Let’s study the signature of socket()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-domain"><span class="toc-number">1.1.</span> <span class="toc-text">What is domain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-type"><span class="toc-number">1.2.</span> <span class="toc-text">What is type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-protocol"><span class="toc-number">1.3.</span> <span class="toc-text">What is protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#file-descriptor"><span class="toc-number">1.4.</span> <span class="toc-text">file descriptor</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Binding-the-socket-to-a-port-the-bind-system-call"><span class="toc-number">2.</span> <span class="toc-text">Binding the socket to a port (the bind() system call)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bind-signature"><span class="toc-number">2.1.</span> <span class="toc-text">bind signature</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sockaddr-in-struct-members"><span class="toc-number">2.2.</span> <span class="toc-text">sockaddr_in struct members</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTONS-endianness-byte-order"><span class="toc-number">2.3.</span> <span class="toc-text">HTONS, endianness, byte order</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-INADDR-ANY"><span class="toc-number">2.4.</span> <span class="toc-text">What is INADDR_ANY ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-are-network-interfaces-ifconfig"><span class="toc-number">2.5.</span> <span class="toc-text">What are network interfaces ? ifconfig ?</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&text=I&#39;m writing a web server from scratch in C"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&is_video=false&description=I&#39;m writing a web server from scratch in C"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=I&#39;m writing a web server from scratch in C&body=Check out this article: http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&title=I&#39;m writing a web server from scratch in C"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&name=I&#39;m writing a web server from scratch in C&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://ricardopaul.com/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/&t=I&#39;m writing a web server from scratch in C"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Ricardo Paul
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Notes</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
