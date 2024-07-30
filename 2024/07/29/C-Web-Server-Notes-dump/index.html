@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="The server socket is passiveThe client socket is active, makes http requests. Socket typesWe refer to our socket as a stream socket, it is called as such because it allows processes to communicate usi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C Web Server - Note dump">
+<meta property="og:url" content="http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/index.html">
+<meta property="og:site_name" content="Ricardo Paul">
+<meta property="og:description" content="The server socket is passiveThe client socket is active, makes http requests. Socket typesWe refer to our socket as a stream socket, it is called as such because it allows processes to communicate usi">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-30T02:45:38.000Z">
+<meta property="article:modified_time" content="2024-07-30T02:47:22.492Z">
+<meta property="article:author" content="Ricardo Paul">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/logo.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/logo.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+        
+      
+    
+    <!-- title -->
+    <title>C Web Server - Note dump</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Notes</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/13/I-m-writing-a-web-server-from-scratch-in-C/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&text=C Web Server - Note dump"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&is_video=false&description=C Web Server - Note dump"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C Web Server - Note dump&body=Check out this article: http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&name=C Web Server - Note dump&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&t=C Web Server - Note dump"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Socket-types"><span class="toc-number">1.</span> <span class="toc-text">Socket types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-qualifiers-in-C"><span class="toc-number">2.</span> <span class="toc-text">type qualifiers in C</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#restrict-type-qualifier"><span class="toc-number">3.</span> <span class="toc-text">restrict type qualifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-accept-works"><span class="toc-number">4.</span> <span class="toc-text">How accept works ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listening-vs-connected-socket"><span class="toc-number">5.</span> <span class="toc-text">Listening vs connected socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#When-do-we-close-the-new-socket-newly-established-TCP-connection"><span class="toc-number">6.</span> <span class="toc-text">When do we close the new socket (newly established TCP connection)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reading-from-the-socket"><span class="toc-number">7.</span> <span class="toc-text">Reading from the socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read-system-call"><span class="toc-number">8.</span> <span class="toc-text">read() system call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#write-system-call"><span class="toc-number">9.</span> <span class="toc-text">write() system call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lsof-list-open-files"><span class="toc-number">10.</span> <span class="toc-text">lsof (list open files)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Carriage-Return-Line-Feed-CRLF-or-r-n"><span class="toc-number">11.</span> <span class="toc-text">Carriage Return Line Feed (CRLF) or \r\n</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Log-client-address-information"><span class="toc-number">12.</span> <span class="toc-text">Log client address information</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A-better-mental-image"><span class="toc-number">12.1.</span> <span class="toc-text">A better mental image</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Read-the-request-line"><span class="toc-number">13.</span> <span class="toc-text">Read the request line</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listen-signature"><span class="toc-number">14.</span> <span class="toc-text">listen() signature</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        C Web Server - Note dump
+    </h1>
+
+
+
+    <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <span class="p-name" itemprop="name">Ricardo Paul</span>
+    </span>
+    <div class="meta">
+      <span> On </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-30T02:45:38.000Z" class="dt-published" itemprop="datePublished">July 29, 2024</time>
+        
+      
+    </div>
+
+
+      
+
+    </div>
+    
+
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>The server socket is passive<br>The client socket is active, makes http requests.</p>
+<h3 id="Socket-types"><a href="#Socket-types" class="headerlink" title="Socket types"></a>Socket types</h3><p>We refer to our socket as a stream socket, it is called as such because it allows processes to communicate using TCP, which is why the type is <code>SOCK_STREAM</code>. If we where to use UDP <code>SOCK_DGRAM</code>, we’d call it a datagram socket.</p>
+<h3 id="type-qualifiers-in-C"><a href="#type-qualifiers-in-C" class="headerlink" title="type qualifiers in C"></a>type qualifiers in C</h3><pre><code>const, volatile, restrict are type qualifiers in C
+const as we know - means that the value wwon&#39;t
+volatile
+</code></pre>
+<h3 id="restrict-type-qualifier"><a href="#restrict-type-qualifier" class="headerlink" title="restrict type qualifier"></a>restrict type qualifier</h3><pre><code>restrict is a pointer qualifier (only used for pointesrs), it&#39;s used for optimization. if we write `int* restrict p1 = &amp;a` here `p1` is a pointer to an int, restrict qualifier is applied to p1. This is telling the compiler,for the lifetime of this pointer only `p1` (the pointer name) wil be used to accessed the value `p1` is pointing to.
+</code></pre>
+<h3 id="How-accept-works"><a href="#How-accept-works" class="headerlink" title="How accept works ?"></a>How accept works ?</h3><p><code>accept(int socket, struct sockaddr *restrict address,          socklen_t *restrict address_len);</code></p>
+<ul>
+<li>first arg is the socket file descriptor</li>
+<li>second arg: address is a pointer to  the sockaddr struct, restrict is a type qualifier applied to pointer <code>address</code></li>
+</ul>
+<p>Accept takes a tcp socket (first TCP connection) but creates a new TCP socket that handles the connection to the client. The first socket remains open for new client connection requests.</p>
+<h3 id="Listening-vs-connected-socket"><a href="#Listening-vs-connected-socket" class="headerlink" title="Listening vs connected socket"></a>Listening vs connected socket</h3><ul>
+<li>The server starts by creating a new socket and bind it to a port, this socket is referred to as the <em>listening socket</em>.</li>
+<li>When a client makes a connection request to the server, the operating system queueus the request. </li>
+<li><code>accept</code> is called on the listening socketd, it extracts a connection request from the queue and creates a new socket specifically for the client willing to connect, this is the <strong>connected socket</strong> or the <strong>client socket</strong>. This socket is destroyed as soon as the server has responded to the client.</li>
+<li>The listening socket remains</li>
+</ul>
+<h3 id="When-do-we-close-the-new-socket-newly-established-TCP-connection"><a href="#When-do-we-close-the-new-socket-newly-established-TCP-connection" class="headerlink" title="When do we close the new socket (newly established TCP connection)"></a>When do we close the new socket (newly established TCP connection)</h3><ul>
+<li>Write after responding ?<br>  In HTTP/1.0 that is the case, so if we are implementing HTTP/1.0 we need to close the TCP socket after writing a response to the client.    </li>
+<li>Do we not re-use the TCP connection ?<br>  In HTTP/1.1, persistent connection is introduced, if we are implementing it, we need to re-use the same TCP connection for future requests.</li>
+</ul>
+<h3 id="Reading-from-the-socket"><a href="#Reading-from-the-socket" class="headerlink" title="Reading from the socket"></a>Reading from the socket</h3><p>questions:</p>
+<ul>
+<li>How is it possible to read data from a file descriptor, where does the file descriptor find this data ? why do we take the data from the fd and put it in the buffer ?</li>
+</ul>
+<h3 id="read-system-call"><a href="#read-system-call" class="headerlink" title="read() system call"></a>read() system call</h3><ul>
+<li>read() sys call - read from a file descriptor to a buffer</li>
+</ul>
+<h3 id="write-system-call"><a href="#write-system-call" class="headerlink" title="write() system call"></a>write() system call</h3><ul>
+<li>write to the file descriptor from a buffer</li>
+</ul>
+<ul>
+<li>A file descriptor can represent different things, in our case it represents the socket. So read() is about reading data from the socket (data sent by the client) to a buffer. write() writes data to the socket (to send to the client)</li>
+</ul>
+<h3 id="lsof-list-open-files"><a href="#lsof-list-open-files" class="headerlink" title="lsof (list open files)"></a>lsof (list open files)</h3><p>everything is a file in linux, including network connections.<br>this displays information about the process using port 8000<br>lsof -i TCP:8000</p>
+<p>if we need to return the process ID we can append -t<br>lsof -i TCP:8000 -t</p>
+<p>we can kill the process using its ID<br>sudo kill -9 $(lsof -i :8000 -tg)</p>
+<h3 id="Carriage-Return-Line-Feed-CRLF-or-r-n"><a href="#Carriage-Return-Line-Feed-CRLF-or-r-n" class="headerlink" title="Carriage Return Line Feed (CRLF) or \r\n"></a>Carriage Return Line Feed (CRLF) or \r\n</h3><p>This is a combination of carriage return and new line that indicates the end of an http header.<br>It is recommended by the HTTP standard.<br>A wider space is required to separate the headers and the message body.. (\r\n\r\n)</p>
+<h3 id="Log-client-address-information"><a href="#Log-client-address-information" class="headerlink" title="Log client address information"></a>Log client address information</h3><p><strong>getpeername()</strong><br>We’ll be using this for the client socket created when we accept() a client connection.<br>Is the socket  Is the socket bound to an address ? Though we passed the host address to accept.</p>
+<p>It’s interesting that we don’t do anything with the return value of <strong>getpeername</strong>  other than checking if it is 0.</p>
+<p>Questions from reading:<br>  what does local name of a socket mean? is there a case where the socket name is not local ?<br>  what does it mean the socket is bound by the operating system ?<br>  so getpeername() stores the local address of the socket i pass it to the structure i pass it ?</p>
+<h4 id="A-better-mental-image"><a href="#A-better-mental-image" class="headerlink" title="A better mental image"></a>A better mental image</h4><p>  The http client is reponsible to create a client socket (curl for example)<br>  the operating system assigns an ip address and an EPHEMERAL port number to the socket<br>  the server on its side will create a new socket on accepting the client request<br>  the server can use <strong>getpeername</strong> on the client socket to retrieve the IP address and the EPHEMERAL port number assigned by the client OS.</p>
+<p>There’s also <strong>getsockname</strong> which is used to get the server IP and port information.</p>
+<h3 id="Read-the-request-line"><a href="#Read-the-request-line" class="headerlink" title="Read the request line"></a>Read the request line</h3><p>The request line is the first line of the request made by an HTTP client<br>it looks something like this:<strong>GET / HTTP/1.0</strong> which is <strong>method uri version</strong></p>
+<p>Remember when read() data from the client socket ? we put this data in a buffer, so the request line (included in the client reuqest )sent by the client is in the buffer. </p>
+<h3 id="listen-signature"><a href="#listen-signature" class="headerlink" title="listen() signature"></a>listen() signature</h3><p>int listen(sockfd, backlog)<br>backlog is a number that represents the size of the connection queue. SOMAXCONN is the value we’re using which is 128.<br>We know that the operating system queues the requests when they first come, and call accept() to remove a request from the queue. 128 is the limit number of connections to q can store. If a new request comes and the queue is already full, an ECONNREFUSED error will be sent to the client. The connection may succeed if the client retries it.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Notes</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Socket-types"><span class="toc-number">1.</span> <span class="toc-text">Socket types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-qualifiers-in-C"><span class="toc-number">2.</span> <span class="toc-text">type qualifiers in C</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#restrict-type-qualifier"><span class="toc-number">3.</span> <span class="toc-text">restrict type qualifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-accept-works"><span class="toc-number">4.</span> <span class="toc-text">How accept works ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listening-vs-connected-socket"><span class="toc-number">5.</span> <span class="toc-text">Listening vs connected socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#When-do-we-close-the-new-socket-newly-established-TCP-connection"><span class="toc-number">6.</span> <span class="toc-text">When do we close the new socket (newly established TCP connection)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reading-from-the-socket"><span class="toc-number">7.</span> <span class="toc-text">Reading from the socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read-system-call"><span class="toc-number">8.</span> <span class="toc-text">read() system call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#write-system-call"><span class="toc-number">9.</span> <span class="toc-text">write() system call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lsof-list-open-files"><span class="toc-number">10.</span> <span class="toc-text">lsof (list open files)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Carriage-Return-Line-Feed-CRLF-or-r-n"><span class="toc-number">11.</span> <span class="toc-text">Carriage Return Line Feed (CRLF) or \r\n</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Log-client-address-information"><span class="toc-number">12.</span> <span class="toc-text">Log client address information</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A-better-mental-image"><span class="toc-number">12.1.</span> <span class="toc-text">A better mental image</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Read-the-request-line"><span class="toc-number">13.</span> <span class="toc-text">Read the request line</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listen-signature"><span class="toc-number">14.</span> <span class="toc-text">listen() signature</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&text=C Web Server - Note dump"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&is_video=false&description=C Web Server - Note dump"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C Web Server - Note dump&body=Check out this article: http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&title=C Web Server - Note dump"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&name=C Web Server - Note dump&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://ricardopaul.com/2024/07/29/C-Web-Server-Notes-dump/&t=C Web Server - Note dump"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Ricardo Paul
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Notes</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/Ricardo-Paul">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
